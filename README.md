@@ -51,7 +51,6 @@ All charts respond to the carat/cut/color filters in the sidebar.
 ![Distributions tab, continued](screenshots/distribution2.png)
 ![Relationships tab](screenshots/relationship.png)
 ![Relationships tab, continued](screenshots/relationship2.png)
-
 ## Notes
 
 - Data cleaning removes duplicates and physically impossible measurements
