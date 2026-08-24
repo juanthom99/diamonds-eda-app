@@ -1,0 +1,12 @@
+[project]
+name = "diamonds-eda-app"
+version = "0.1.0"
+description = "Streamlit EDA app for the diamonds dataset"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.38",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+]
