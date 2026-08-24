@@ -45,12 +45,12 @@ All charts respond to the carat/cut/color filters in the sidebar.
 
 ## Screenshots
 
-> Run the app locally and drop screenshots here before submitting —
-> screenshots of your own running instance are what the assignment asks for.
-
-`![Overview tab](screenshots/overview.png)`
-`![Distributions tab](screenshots/distributions.png)`
-`![Relationships tab](screenshots/relationships.png)`
+![Overview tab](screenshots/overview.png)
+![Overview tab, continued](screenshots/overview2.png)
+![Distributions tab](screenshots/distribution.png)
+![Distributions tab, continued](screenshots/distribution2.png)
+![Relationships tab](screenshots/relationship.png)
+![Relationships tab, continued](screenshots/relationship2.png)
 
 ## Notes
 
