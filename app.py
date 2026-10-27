@@ -222,8 +222,8 @@ with tabs[2]:
     ax3.legend()
     st.pyplot(fig3)
     st.caption(
-        "Price outliers aren't data errors — they're large, high-clarity stones. "
-        "I keep them: they're real and are exactly what drives the top end of the price curve."
+        "An IQR flag identifies an unusually high price, not a confirmed data error. "
+        "These records are retained so the upper end of the observed price distribution remains visible."
     )
 
 # ---------------------------------------------------------------------------
@@ -235,12 +235,12 @@ with tabs[3]:
     fig4, ax4 = plt.subplots(figsize=(9, 5))
     sns.scatterplot(data=fdf.sample(min(5000, len(fdf)), random_state=1),
                      x="carat", y="price", hue="clarity", palette="viridis", s=15, alpha=0.6, ax=ax4)
-    ax4.set_title("Carat vs. price, colored by clarity (5,000-row sample for readability)")
+    ax4.set_title(f"Carat vs. price, colored by clarity ({min(5000, len(fdf)):,}-row sample)")
     st.pyplot(fig4)
     st.caption(
         f"Correlation between carat and price: {fdf['carat'].corr(fdf['price']):.2f}. "
-        "The relationship is strongly positive but convex — price accelerates as carat grows, "
-        "which is why a log transform is standard before modeling this dataset."
+        "The scatterplot shows the relationship within the current filters. "
+        "Correlation summarizes association and does not establish a causal effect."
     )
 
     st.subheader("Price by categorical grade")
@@ -251,9 +251,8 @@ with tabs[3]:
     ax5.set_title(f"Price distribution by {grade_choice}")
     st.pyplot(fig5)
     st.caption(
-        "Counterintuitively, median price doesn't rise cleanly with 'better' cut/color/clarity grades — "
-        "that's because carat (size) dominates price and isn't held constant here. Higher-graded stones "
-        "in this dataset also skew smaller, since large rough stones are harder to cut to top grades."
+        "These are unadjusted price distributions. Carat and the other grades are not held constant, "
+        "so differences between groups do not isolate the effect of the selected grade on price."
     )
 
 # ---------------------------------------------------------------------------
@@ -267,9 +266,9 @@ with tabs[4]:
     sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm", center=0, ax=ax6)
     st.pyplot(fig6)
     st.caption(
-        "x, y, z, and carat are almost perfectly collinear (all measure size), so I treat them as one "
-        "signal rather than four independent features. Depth and table are nearly uncorrelated with "
-        "price — they describe cut proportions, not size, and matter far less to price than carat does."
+        "Carat measures weight; x, y, and z measure physical dimensions. Strong correlations can "
+        "indicate redundant size information. Values reflect the current filters; weak linear "
+        "correlation does not rule out nonlinear relationships."
     )
 
 st.divider()

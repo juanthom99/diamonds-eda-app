@@ -45,7 +45,7 @@ The app opens at `http://localhost:8501`.
   (cut, color, clarity).
 - **Tab 3 — Outliers**: IQR-based outlier table across all numeric columns,
   plus a carat-vs-price scatterplot with price outliers highlighted (kept
-  in the data — they're real large/high-clarity stones, not errors).
+  in the data — an IQR flag alone does not establish that a record is an error).
 - **Tab 4 — Relationships with Price**: carat vs. price colored by clarity,
   and price distribution by cut/color/clarity.
 - **Tab 5 — Correlation**: heatmap across numeric features, with a note on
@@ -64,5 +64,5 @@ All charts respond to the carat/cut/color filters in the sidebar.
 - Data cleaning removes duplicates and physically impossible measurements
   (e.g. a diamond with 0mm depth) rather than silently reindexing — the
   cleaning log is shown in the app itself, not just in this README.
-- The 4 Cs (carat, cut, color, clarity) are treated as ordered categorical
-  variables so plots and comparisons respect their natural grade order.
+- Cut, color, and clarity use ordered categories so plots respect their natural
+  grade order. Carat remains a numeric measure of weight.
