@@ -4,6 +4,16 @@ A Streamlit app that loads the `diamonds.csv` dataset (53,940 round-cut
 diamonds), cleans it, and walks through a full exploratory data analysis:
 structure, distributions, outliers, and relationships with price.
 
+**[Open the live application →](https://juanthom99--diamonds-eda-app-run.modal.run/)**
+
+## Hosting and data
+
+The finished app is hosted on **Modal** and reads the public diamonds table from **Supabase** using the existing server-side `supabase-secret`. Reads are paginated to include the full dataset. The sidebar identifies the active source. If Supabase is temporarily unavailable, the packaged CSV keeps the demo usable; a fallback is identified explicitly rather than presented as a successful database connection.
+
+For local development, copy `.env.example` to `.env` and set your Supabase connection values. Do not commit credentials. With no connection configured, the app uses the bundled CSV.
+
+Deploy with `python -m modal deploy serve_streamlit.py` after configuring the server-side secret in your Modal workspace. The deployment includes the application, data loader, and CSV fallback.
+
 ## Dataset
 
 `data/diamonds.csv` — 10 columns: `carat`, `cut`, `color`, `clarity`, `depth`,
@@ -14,7 +24,7 @@ structure, distributions, outliers, and relationships with price.
 
 ```bash
 # from inside this folder
-uv add streamlit pandas numpy matplotlib seaborn
+uv sync
 uv run streamlit run app.py
 ```
 
@@ -28,8 +38,8 @@ The app opens at `http://localhost:8501`.
 - **Tab 1 — Overview & Cleaning**: shape, dtypes, missing-value check, and
   the cleaning steps applied (146 exact duplicates dropped, 20 rows with a
   0mm dimension dropped, a few rows with implausible 20mm+ dimensions
-  dropped as likely data-entry typos). No columns were dropped — every
-  field carries independent signal.
+  dropped as likely data-entry typos). No columns were dropped; correlations and redundant dimensions are examined
+  explicitly in the correlation tab.
 - **Tab 2 — Distributions**: histogram + boxplot for any numeric column,
   skewness callout, and count plots for the three categorical grades
   (cut, color, clarity).
@@ -51,6 +61,7 @@ All charts respond to the carat/cut/color filters in the sidebar.
 ![Distributions tab, continued](screenshots/distribution2.png)
 ![Relationships tab](screenshots/relationship.png)
 ![Relationships tab, continued](screenshots/relationship2.png)
+
 ## Notes
 
 - Data cleaning removes duplicates and physically impossible measurements

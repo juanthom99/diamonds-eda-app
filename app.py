@@ -1,5 +1,5 @@
 """
-Diamonds Dataset ΓÇö Exploratory Data Analysis
+Diamonds Dataset — Exploratory Data Analysis
 A Streamlit app that loads the diamonds.csv dataset, cleans it, and walks
 through a full EDA: structure, distributions, outliers, and relationships
 between diamond characteristics and price.
@@ -10,6 +10,10 @@ import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
+from dotenv import load_dotenv
+from data_source import load_diamonds
+
+load_dotenv()
 
 sns.set_style("whitegrid")
 
@@ -26,9 +30,9 @@ CAT_ORDER = {
 }
 
 
-@st.cache_data
+@st.cache_data(ttl=300)
 def load_raw():
-    return pd.read_csv("data/diamonds.csv")
+    return load_diamonds()
 
 
 @st.cache_data
@@ -62,7 +66,8 @@ def clean_data(df: pd.DataFrame):
     return df, log
 
 
-raw = load_raw()
+raw, data_source = load_raw()
+st.sidebar.caption(f"Data source: {data_source}")
 df, cleaning_log = clean_data(raw)
 
 # ---------------------------------------------------------------------------
@@ -87,13 +92,21 @@ fdf = df[
 
 st.sidebar.caption(f"{len(fdf):,} of {len(df):,} cleaned rows match the current filters.")
 
+if fdf.empty:
+    st.info("No diamonds match these filters. Select a cut and color, or widen the carat range.")
+    st.stop()
+
+if fdf.empty:
+    st.info("No diamonds match these filters. Select a cut and color, or widen the carat range.")
+    st.stop()
+
 # ---------------------------------------------------------------------------
 # Header
 # ---------------------------------------------------------------------------
 
-st.title("≡ƒÆÄ Diamonds Dataset ΓÇö Exploratory Data Analysis")
+st.title("💎 Diamonds Dataset — Exploratory Data Analysis")
 st.markdown(
-    "Dataset: [`diamonds.csv`](https://github.com/mwaskom/seaborn-data) ΓÇö "
+    "Dataset: [`diamonds.csv`](https://github.com/mwaskom/seaborn-data) — "
     "53,940 round-cut diamonds with 4 quality attributes (the 4 Cs), "
     "physical dimensions, and price. Filters in the sidebar apply to every "
     "chart below."
@@ -108,7 +121,7 @@ tabs = st.tabs([
 ])
 
 # ---------------------------------------------------------------------------
-# Tab 1 ΓÇö Overview & cleaning
+# Tab 1 — Overview & cleaning
 # ---------------------------------------------------------------------------
 
 with tabs[0]:
@@ -123,7 +136,7 @@ with tabs[0]:
     for line in cleaning_log:
         st.markdown(f"- {line}")
     st.caption(
-        "No columns were dropped ΓÇö every field (carat, cut, color, clarity, depth, "
+        "No columns were dropped — every field (carat, cut, color, clarity, depth, "
         "table, price, x, y, z) is independently informative for this analysis."
     )
 
@@ -138,7 +151,7 @@ with tabs[0]:
         st.dataframe(df.describe().T, use_container_width=True)
 
 # ---------------------------------------------------------------------------
-# Tab 2 ΓÇö Distributions
+# Tab 2 — Distributions
 # ---------------------------------------------------------------------------
 
 with tabs[1]:
@@ -156,7 +169,7 @@ with tabs[1]:
     skew = fdf[choice].skew()
     st.caption(
         f"Skewness: {skew:.2f}. "
-        + ("Right-skewed ΓÇö a handful of large/expensive stones stretch the tail."
+        + ("Right-skewed — a handful of large/expensive stones stretch the tail."
            if skew > 0.5 else
            "Left-skewed." if skew < -0.5 else
            "Roughly symmetric.")
@@ -174,13 +187,13 @@ with tabs[1]:
     st.pyplot(fig2)
 
 # ---------------------------------------------------------------------------
-# Tab 3 ΓÇö Outliers
+# Tab 3 — Outliers
 # ---------------------------------------------------------------------------
 
 with tabs[2]:
     st.subheader("Outlier detection (IQR method)")
     st.markdown(
-        "For each numeric column I flag points beyond 1.5├ùIQR from the quartiles "
+        "For each numeric column I flag points beyond 1.5×IQR from the quartiles "
         "and report the share of rows affected, on the *cleaned* data (typos already removed)."
     )
 
@@ -203,18 +216,18 @@ with tabs[2]:
 
     fig3, ax3 = plt.subplots(figsize=(9, 5))
     ax3.scatter(fdf.loc[~is_out, "carat"], fdf.loc[~is_out, "price"], s=6, alpha=0.3, label="typical", color="#4c72b0")
-    ax3.scatter(fdf.loc[is_out, "carat"], fdf.loc[is_out, "price"], s=8, alpha=0.6, label="price outlier (>1.5├ùIQR)", color="#c44e52")
+    ax3.scatter(fdf.loc[is_out, "carat"], fdf.loc[is_out, "price"], s=8, alpha=0.6, label="price outlier (>1.5×IQR)", color="#c44e52")
     ax3.set_xlabel("carat")
     ax3.set_ylabel("price ($)")
     ax3.legend()
     st.pyplot(fig3)
     st.caption(
-        "Price outliers aren't data errors ΓÇö they're large, high-clarity stones. "
+        "Price outliers aren't data errors — they're large, high-clarity stones. "
         "I keep them: they're real and are exactly what drives the top end of the price curve."
     )
 
 # ---------------------------------------------------------------------------
-# Tab 4 ΓÇö Relationships with price
+# Tab 4 — Relationships with price
 # ---------------------------------------------------------------------------
 
 with tabs[3]:
@@ -226,7 +239,7 @@ with tabs[3]:
     st.pyplot(fig4)
     st.caption(
         f"Correlation between carat and price: {fdf['carat'].corr(fdf['price']):.2f}. "
-        "The relationship is strongly positive but convex ΓÇö price accelerates as carat grows, "
+        "The relationship is strongly positive but convex — price accelerates as carat grows, "
         "which is why a log transform is standard before modeling this dataset."
     )
 
@@ -238,13 +251,13 @@ with tabs[3]:
     ax5.set_title(f"Price distribution by {grade_choice}")
     st.pyplot(fig5)
     st.caption(
-        "Counterintuitively, median price doesn't rise cleanly with 'better' cut/color/clarity grades ΓÇö "
+        "Counterintuitively, median price doesn't rise cleanly with 'better' cut/color/clarity grades — "
         "that's because carat (size) dominates price and isn't held constant here. Higher-graded stones "
         "in this dataset also skew smaller, since large rough stones are harder to cut to top grades."
     )
 
 # ---------------------------------------------------------------------------
-# Tab 5 ΓÇö Correlation
+# Tab 5 — Correlation
 # ---------------------------------------------------------------------------
 
 with tabs[4]:
@@ -256,7 +269,7 @@ with tabs[4]:
     st.caption(
         "x, y, z, and carat are almost perfectly collinear (all measure size), so I treat them as one "
         "signal rather than four independent features. Depth and table are nearly uncorrelated with "
-        "price ΓÇö they describe cut proportions, not size, and matter far less to price than carat does."
+        "price — they describe cut proportions, not size, and matter far less to price than carat does."
     )
 
 st.divider()

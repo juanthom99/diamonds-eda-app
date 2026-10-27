@@ -17,6 +17,8 @@ image = (
         "python-dotenv",
     )
     .add_local_file(Path(__file__).parent / "app.py", "/root/app.py")
+    .add_local_file(Path(__file__).parent / "data_source.py", "/root/data_source.py")
+    .add_local_file(Path(__file__).parent / "data" / "diamonds.csv", "/root/data/diamonds.csv")
 )
 
 supabase_secret = modal.Secret.from_name("supabase-secret")
@@ -34,6 +36,7 @@ def run():
     cmd = (
         f"streamlit run {target} "
         f"--server.port 8000 "
+        f"--server.address 0.0.0.0 "
         f"--server.enableCORS=false "
         f"--server.enableXsrfProtection=false"
     )

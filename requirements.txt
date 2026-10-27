@@ -3,3 +3,6 @@ pandas>=2.2
 numpy>=1.26
 matplotlib>=3.8
 seaborn>=0.13
+supabase>=2.31.0
+python-dotenv>=1.2.3
+modal>=1.5.5
