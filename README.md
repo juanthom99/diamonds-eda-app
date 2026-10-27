@@ -36,8 +36,8 @@ The app opens at `http://localhost:8501`.
 ## What's in the app
 
 - **Tab 1 — Overview & Cleaning**: shape, dtypes, missing-value check, and
-  the cleaning steps applied (146 exact duplicates dropped, 20 rows with a
-  0mm dimension dropped, a few rows with implausible 20mm+ dimensions
+  the cleaning steps applied (146 exact duplicates dropped, 19 rows with a
+  0mm dimension dropped, three rows with implausible 20mm+ dimensions
   dropped as likely data-entry typos). No columns were dropped; correlations and redundant dimensions are examined
   explicitly in the correlation tab.
 - **Tab 2 — Distributions**: histogram + boxplot for any numeric column,
@@ -56,11 +56,8 @@ All charts respond to the carat/cut/color filters in the sidebar.
 ## Screenshots
 
 ![Overview tab](screenshots/overview.png)
-![Overview tab, continued](screenshots/overview2.png)
 ![Distributions tab](screenshots/distribution.png)
-![Distributions tab, continued](screenshots/distribution2.png)
 ![Relationships tab](screenshots/relationship.png)
-![Relationships tab, continued](screenshots/relationship2.png)
 
 ## Notes
 

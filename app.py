@@ -136,8 +136,8 @@ with tabs[0]:
     for line in cleaning_log:
         st.markdown(f"- {line}")
     st.caption(
-        "No columns were dropped — every field (carat, cut, color, clarity, depth, "
-        "table, price, x, y, z) is independently informative for this analysis."
+        "All ten columns were retained. The correlation tab examines redundancy "
+        "among carat and the physical measurements."
     )
 
     st.subheader("Sample of cleaned data")
